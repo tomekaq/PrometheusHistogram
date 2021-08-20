@@ -108,7 +108,7 @@ int main (int argc, char **argv)
 	//HList.Add(histogramEnergy);
 	HList.Add(histogramEnergy1);
 	HList.Add(histogramEnergy2);
-        HList.Add(histogramEnergy3);
+    HList.Add(histogramEnergy3);
         HList.Add(histogramEnergy5);
         HList.Add(histogramEnergy6);
         HList.Add(histogramEnergy7);
@@ -169,7 +169,7 @@ int main (int argc, char **argv)
 			}
 			float ival = 0.0;
 			float k=0;
-			while(!input.eof())
+			while(!input.eof())  // loop over  binary file
 	       		{ 	
        				double line [7] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0}; 
 			   		for (int j = 0; j < 7; ++j)
