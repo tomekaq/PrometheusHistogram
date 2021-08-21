@@ -46,25 +46,35 @@ vector<string> vectorfileNames(int end, string path)
 
 int main(int argc, char **argv)
 {
-	//string path = "";
+	int lFile = 0;
+	string path = "";
+	int distanceX = 0;
+	int distanceY = 0;
 	//string path = "../../CorsikaSims/unthinned_shower/";
-	string path = "/home/tomekaq/Pulpit/corsika-77100/src/utils/coast/CorsikaRead/UnThining/";
-	string resultsPath = "results2-10m/";
+	//string path = "/home/tomekaq/Pulpit/corsika-77100/src/utils/coast/CorsikaRead/UnThining/";
+	string resultsPath = "";
 	ifstream shiftsFile("shifts.txt", ios::in);
+	ifstream inputFile("input",ios::in);
+
+	inputFile.is_open();
+	inputFile >> path;
+	inputFile >> resultsPath;
+	inputFile >> lFile;
+	inputFile >> distanceX;
+	inputFile >> distanceY;
+
+
 	ofstream checkFile(resultsPath + "checkFile.txt");
 	ofstream resultsFile(resultsPath + "results.txt");
 	ofstream resultsParticles(resultsPath + "resultsParticles.txt");
 	TFile *rootFile = new TFile("Event.root", "RECREATE");
-
-	vector<string> fileNames = vectorfileNames(1200, path);
+	vector<string> fileNames = vectorfileNames(lFile, path);
 
 	float d = 100.0;
 
 	// Set distance of detector to the center
 
-	int distanceX = 0;
-	int distanceY = 0;
-
+	cout << path << " "<< lFile << " " << distanceX << " " << distanceY << endl;
 	vector<Detector> vecDetectors;
 	unordered_map<int, int> mapShifts;
 
@@ -80,10 +90,10 @@ int main(int argc, char **argv)
 	vector<TH1F> histogramsEnergy;
 
 	TObjArray HList(0);
-
 	TObjArray HListEnergy(0);
 	TObjArray HListPosX(0);
 	TObjArray HListPosY(0);
+	TObjArray HListPosXY(0);
 
 	int gt10 = 0;
 	TH1F *histogramEnergy = new TH1F("Energy all particles", "", 100, 0, 0.3);
@@ -117,16 +127,16 @@ int main(int argc, char **argv)
 		nameHY = nameHY + i;
 		hPartY->SetName(nameHY.c_str());
 		HListPosY.Add(hPartY);
-	}
 
-	//histogramsEnergy.push_back(*histogramEnergy1);
-	//histogramsEnergy[0].Draw();
+		TH2F *hPartXY = new TH2F("Position X & Y", "", 100, -50 + distanceX, 50 + distanceX,100, -50 + distanceY, 50 + distanceY);
+		string nameHXY = "Position X and Y of particle ";
+		nameHXY = nameHXY + i;
+		hPartXY->SetName(nameHXY.c_str());
+		HListPosXY.Add(hPartXY);
+	}
 
 	auto *hEnergyID = new TH2D("Dependence between energy and type of particle", "", 100, 0, 10, 30, 0, 0.3);
 	gROOT->Reset();
-
-	//HList.Add(histogramEnergy);
-	//HList.Add(histogramEnergy1);
 
 	HList.Add(histogramID);
 	HList.Add(hPositionXY);
@@ -160,7 +170,7 @@ int main(int argc, char **argv)
 		int n = 0;
 		resultsParticles << fname << endl;
 		shift = mapShifts[(int)stoi(fname.substr(fname.size() - 4))];
-		//cout << shift << endl;
+
 		if (input.is_open())
 		{
 			if (iFile % 2 == 0)
@@ -181,8 +191,8 @@ int main(int argc, char **argv)
 			}
 			float ival = 0.0;
 			float k = 0;
-			for (int i = 0; i < 300000; i++)
-			//while (!input.eof()) // loop over  binary file
+			//for (int i = 0; i < 300000; i++)
+			while (!input.eof()) // loop over  binary file
 			{
 				double line[7] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 				for (int j = 0; j < 7; ++j)
@@ -232,6 +242,9 @@ int main(int argc, char **argv)
 
 						TH1D *hY = (TH1D *)HListPosY[partID - 1];
 						hY->Fill(partY);
+
+						TH2D *hXY = (TH2D *)HListPosXY[partID - 1];
+						hXY->Fill(partX,partY);
 					}
 				}
 				delete part;
@@ -283,6 +296,12 @@ int main(int argc, char **argv)
 	HListEnergy.Write();
 	HListPosX.Write();
 	HListPosY.Write();
+	for (int i = 0; i < 15; i++)
+	{
+		TH2D* hXY = (TH2D*)HListPosXY[i];
+		hXY->SetOption("colz");
+	}
+	HListPosXY.Write();
 
 	shiftsFile.close();
 	std::time_t result2 = std::time(nullptr);
@@ -290,7 +309,7 @@ int main(int argc, char **argv)
 	resultsFile << "Total energy: " << energy << endl;
 	resultsFile << "Number of particles which have ID > 10: " << gt10 << endl;
 
-	//stats.Show(resultsFile);
+	stats.Show(resultsFile);
 
 	resultsFile.close();
 	rootFile->Close();
