@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 
 	Detector detector(distanceX, distanceY, d);
 	vecDetectors.push_back(detector);
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 1200; i++)
 	{
 		pair<int, int> vecP;
 		shiftsFile >> vecP.first;
