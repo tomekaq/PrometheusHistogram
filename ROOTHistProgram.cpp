@@ -63,11 +63,12 @@ int main(int argc, char **argv)
 	inputFile >> distanceX;
 	inputFile >> distanceY;
 
-
+	TString nameRootFile("New");
+	nameRootFile = resultsPath + "Results"+ distanceX +"m.root";
 	ofstream checkFile(resultsPath + "checkFile.txt");
 	ofstream resultsFile(resultsPath + "results.txt");
 	ofstream resultsParticles(resultsPath + "resultsParticles.txt");
-	TFile *rootFile = new TFile("Event.root", "RECREATE");
+	TFile *rootFile = new TFile(nameRootFile, "RECREATE");
 	vector<string> fileNames = vectorfileNames(lFile, path);
 
 	float d = 100.0;
@@ -114,24 +115,32 @@ int main(int argc, char **argv)
 		string nameH = "Energy of particle ";
 		nameH = nameH + i;
 		hEnergyPart->SetName(nameH.c_str());
+		hEnergyPart->GetXaxis()->SetTitle("Energy in GeV ");
+		hEnergyPart->GetYaxis()->SetTitle("Amount");
 		HListEnergy.Add(hEnergyPart);
 
 		TH1F *hPartX = new TH1F("Position X", "", 100, -50 + distanceX, 50 + distanceX);
 		string nameHX = "Position X of particle  ";
 		nameHX = nameHX + i;
 		hPartX->SetName(nameHX.c_str());
+		hPartX->GetXaxis()->SetTitle("Position on X axis");
+		hPartX->GetYaxis()->SetTitle("Amount");
 		HListPosX.Add(hPartX);
 
 		TH1F *hPartY = new TH1F("Position Y", "", 100, -50 + distanceY, 50 + distanceY);
 		string nameHY = "Position Y of particle ";
 		nameHY = nameHY + i;
 		hPartY->SetName(nameHY.c_str());
+		hPartY->GetXaxis()->SetTitle("Position on Y axis");
+		hPartY->GetYaxis()->SetTitle("Amount");
 		HListPosY.Add(hPartY);
 
 		TH2F *hPartXY = new TH2F("Position X & Y", "", 100, -50 + distanceX, 50 + distanceX,100, -50 + distanceY, 50 + distanceY);
 		string nameHXY = "Position X and Y of particle ";
 		nameHXY = nameHXY + i;
 		hPartXY->SetName(nameHXY.c_str());
+		hPartXY->GetXaxis()->SetTitle("Position on X axis");
+		hPartXY->GetYaxis()->SetTitle("Position on Y axis");
 		HListPosXY.Add(hPartXY);
 	}
 
