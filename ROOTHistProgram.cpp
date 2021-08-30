@@ -99,9 +99,9 @@ int main(int argc, char **argv)
 	int gt10 = 0;
 	TH1F *histogramEnergy = new TH1F("Energy all particles", "", 100, 0, 0.3);
 	auto *histogramID = new TH1D("Type of particles by ID", "", 100, 0, 10.5);
-	auto *hPositionX = new TH1D("X positions", "", 100, -50 + distanceX, 50 + distanceX);
-	auto *hPositionY = new TH1D("Y positions", "", 100, -50, 50);
-	auto *hPositionXY = new TH2D("XY positions", "", 100, -50 + distanceX, 50 + distanceX, 100, -50, 50);
+	auto *hPositionX = new TH1D("X positions", "", 100, -20 + distanceX, 20 + distanceX);
+	auto *hPositionY = new TH1D("Y positions", "", 100, -20, 20);
+	auto *hPositionXY = new TH2D("XY positions", "", 100, -20 + distanceX, 20 + distanceX, 100, -20, 20);
 	auto *hAngle = new TH1D("Particle angles", "", 360, -185, 185);
 
 	for (int i = 1; i <= 15; i++)
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
 		hEnergyPart->GetYaxis()->SetTitle("Amount");
 		HListEnergy.Add(hEnergyPart);
 
-		TH1F *hPartX = new TH1F("Position X", "", 100, -50 + distanceX, 50 + distanceX);
+		TH1F *hPartX = new TH1F("Position X", "", 100, -20 + distanceX, 20 + distanceX);
 		string nameHX = "Position X of particle  ";
 		nameHX = nameHX + i;
 		hPartX->SetName(nameHX.c_str());
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 		hPartX->GetYaxis()->SetTitle("Amount");
 		HListPosX.Add(hPartX);
 
-		TH1F *hPartY = new TH1F("Position Y", "", 100, -50 + distanceY, 50 + distanceY);
+		TH1F *hPartY = new TH1F("Position Y", "", 100, -20 + distanceY, 20 + distanceY);
 		string nameHY = "Position Y of particle ";
 		nameHY = nameHY + i;
 		hPartY->SetName(nameHY.c_str());
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 		hPartY->GetYaxis()->SetTitle("Amount");
 		HListPosY.Add(hPartY);
 
-		TH2F *hPartXY = new TH2F("Position X & Y", "", 100, -50 + distanceX, 50 + distanceX,100, -50 + distanceY, 50 + distanceY);
+		TH2F *hPartXY = new TH2F("Position X & Y", "", 100, -20 + distanceX, 20 + distanceX,100, -20 + distanceY, 20 + distanceY);
 		string nameHXY = "Position X and Y of particle ";
 		nameHXY = nameHXY + i;
 		hPartXY->SetName(nameHXY.c_str());
