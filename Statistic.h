@@ -96,8 +96,7 @@ class Statistic
 			<< " Number of antineutrino mion: " << particles[68]  << " total energy: " << energy.at(68) <<  endl
 			<< " Number of neutrino tau: " << particles[132]  << " total energy: " << energy.at(132) <<  endl
 			<< " Number of antineutrino tau: " << particles[133]  << " total energy: " << energy.at(133) <<  endl
-			<< " Number of wrong value:" << partices[199] << << " total energy: " << energy.at(199) <<  endl
-			<< " Min: " << findMin() << " Max: " << findMax() << endl;
-
+			<< " Number of wrong value:" << particles[199] << " total energy: " << energy.at(199) <<  endl
+			<< " Min: " << findMin() << " Max: " << findMax() << endl; //
 	}
 };

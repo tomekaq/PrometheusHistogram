@@ -34,7 +34,7 @@ class Particle{
 		_pz = pz;	
 		_x = x;
 		_y = y;
-		_time = SetParticleTime(time);
+		_time = SetParticleTime(time); //
 	}
 
 	bool acceptID(int ID)

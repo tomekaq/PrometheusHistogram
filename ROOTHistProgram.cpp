@@ -105,12 +105,11 @@ int main(int argc, char **argv)
     int rangeUpY =  range +distanceY;
 
 	int gt10 = 0;
-	TH1F *histogramEnergy = new TH1F("Energy all particles", "", 100, 0, 0.3);
     TH1F *histogramEnergy = new TH1F("Energy all particles", "", 1000, 0, 0.3);
     auto *histogramID = new TH1D("Type of particles by ID", "", 100, 0, 10.5);
     auto *hPositionX = new TH1D("X positions", "", 100, rangeDownX, rangeUpX);
     auto *hPositionY = new TH1D("Y positions", "", 100, rangeDownY, rangeUpY);
-    auto *hPositionXY = new TH2D("XY positions", "", 100, rangeDownX, rangeUpX, 100, rangeDownY,$
+    auto *hPositionXY = new TH2D("XY positions", "", 100, rangeDownX, rangeUpX, 100, rangeDownY,rangeUpY);
 	auto *hAngle = new TH1D("Particle angles", "", 360, -185, 185);
 
        for (int i = 1; i <= 15; i++)
@@ -144,7 +143,7 @@ int main(int argc, char **argv)
                 hPartY->GetYaxis()->SetTitle("Amount");
                 HListPosY.Add(hPartY);
 
-                TH2F *hPartXY = new TH2F("Position X & Y", "", 100, rangeDownX, rangeUpX, 100, range$
+                TH2F *hPartXY = new TH2F("Position X & Y", "", 100, rangeDownX, rangeUpX, 100, rangeDownX,rangeDownY);
                 string nameHXY = "Position X and Y of particle ";
                 nameHXY = nameHXY + i;
                 hPartXY->SetName(nameHXY.c_str());
