@@ -40,7 +40,7 @@ class Particle{
 	bool acceptID(int ID)
 	{
 		ID = ID / 1000;
-        	if (ID > 0 and (ID < 33 or ID > 49) and (ID < 70 or ID > 115  ) and(ID < 200))
+        	if (ID > 0 and ID != 4 and (ID < 33 or ID > 49) and (ID < 70 or ID > 115  ) and(ID < 200))
                 	return true;
         	else 
 			return false;

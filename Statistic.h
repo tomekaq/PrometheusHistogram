@@ -74,7 +74,7 @@ class Statistic
 	{	
 		cout << "-----------------------------------------------------------------------------------------" << endl;
 		File 	<< " Total number of particles: " << totalParticles << " total energy: " << totalEnergy << endl 
-			<< " Number of proton: " << particles[0]   << " total energy: " << energy.at(0) << endl
+			<< " Number of photon: " << particles[0]   << " total energy: " << energy.at(0) << endl
 			<< " Number of electron: " << particles[1] << " total energy: " << energy.at(1) << endl
 			<< " Number of positron: " << particles[2]  << " total energy: " << energy.at(2) <<  endl
 			<< " Number of mion plus: " << particles[4]  << " total energy: " << energy.at(4) <<  endl
@@ -82,9 +82,9 @@ class Statistic
 			<< " Number of pion neutral: " << particles[6]  << " total energy: " << energy.at(6) <<  endl
 			<< " Number of pion plus: " << particles[7]  << " total energy: " << energy.at(7) <<  endl
 			<< " Number of pion minus: " << particles[8]  << " total energy: " << energy.at(8) <<  endl
-			<< " Number of 10: " << particles[9]  << " total energy: " << energy.at(9) <<  endl
-			<< " Number of 11: " << particles[10]  << " total energy: " << energy.at(10) <<  endl
-			<< " Number of 12: " << particles[11]  << " total energy: " << energy.at(11) <<  endl
+			<< " Number of kaon zero-Long: " << particles[9]  << " total energy: " << energy.at(9) <<  endl
+			<< " Number of kaon plus: " << particles[10]  << " total energy: " << energy.at(10) <<  endl
+			<< " Number of kaon minus:  " << particles[11]  << " total energy: " << energy.at(11) <<  endl
 			<< " Number of neutron: " << particles[12]  << " total energy: " << energy.at(12) <<  endl
 			<< " Number of proton: " << particles[13]  << " total energy: " << energy.at(13) <<  endl
 			<< " Number of antiprotron: " << particles[14]  << " total energy: " << energy.at(14) <<  endl
@@ -96,6 +96,7 @@ class Statistic
 			<< " Number of antineutrino mion: " << particles[68]  << " total energy: " << energy.at(68) <<  endl
 			<< " Number of neutrino tau: " << particles[132]  << " total energy: " << energy.at(132) <<  endl
 			<< " Number of antineutrino tau: " << particles[133]  << " total energy: " << energy.at(133) <<  endl
+			<< " Number of wrong value:" << partices[199] << << " total energy: " << energy.at(199) <<  endl
 			<< " Min: " << findMin() << " Max: " << findMax() << endl;
 
 	}

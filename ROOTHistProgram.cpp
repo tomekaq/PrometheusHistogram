@@ -45,16 +45,19 @@ vector<string> vectorfileNames(int end, string path)
 }
 
 int main(int argc, char **argv)
-{
+{	
+	//string path = "../../CorsikaSims/unthinned_shower/";
+	//string path = "/home/tomekaq/Pulpit/corsika-77100/src/utils/coast/CorsikaRead/UnThining/";
 	int lFile = 0;
 	string path = "";
 	int distanceX = 0;
-	int distanceY = 0;
-	//string path = "../../CorsikaSims/unthinned_shower/";
-	//string path = "/home/tomekaq/Pulpit/corsika-77100/src/utils/coast/CorsikaRead/UnThining/";
+	int distanceY = 0;	
+	float d = 100.0;
+
+
 	string resultsPath = "";
 	ifstream shiftsFile("shifts.txt", ios::in);
-	ifstream inputFile("input",ios::in);
+	ifstream inputFile("input", ios::in);
 
 	inputFile.is_open();
 	inputFile >> path;
@@ -62,20 +65,19 @@ int main(int argc, char **argv)
 	inputFile >> lFile;
 	inputFile >> distanceX;
 	inputFile >> distanceY;
+	inputFile >> d;
 
 	TString nameRootFile("New");
-	nameRootFile = resultsPath + "Results"+ distanceX +"m.root";
+	nameRootFile = resultsPath + "Results" + distanceX + "m.root";
 	ofstream checkFile(resultsPath + "checkFile.txt");
 	ofstream resultsFile(resultsPath + "results.txt");
 	ofstream resultsParticles(resultsPath + "resultsParticles.txt");
 	TFile *rootFile = new TFile(nameRootFile, "RECREATE");
 	vector<string> fileNames = vectorfileNames(lFile, path);
 
-	float d = 100.0;
-
 	// Set distance of detector to the center
 
-	cout << path << " "<< lFile << " " << distanceX << " " << distanceY << endl;
+	cout << path << " " << lFile << " " << distanceX << " " << distanceY << endl;
 	vector<Detector> vecDetectors;
 	unordered_map<int, int> mapShifts;
 
@@ -96,58 +98,67 @@ int main(int argc, char **argv)
 	TObjArray HListPosY(0);
 	TObjArray HListPosXY(0);
 
+	int range = d/2;
+    int rangeDownX = -range +distanceX;
+    int rangeUpX =  range +distanceX;
+    int rangeDownY = -range +distanceY;
+    int rangeUpY =  range +distanceY;
+
 	int gt10 = 0;
 	TH1F *histogramEnergy = new TH1F("Energy all particles", "", 100, 0, 0.3);
-	auto *histogramID = new TH1D("Type of particles by ID", "", 100, 0, 10.5);
-	auto *hPositionX = new TH1D("X positions", "", 100, -20 + distanceX, 20 + distanceX);
-	auto *hPositionY = new TH1D("Y positions", "", 100, -20, 20);
-	auto *hPositionXY = new TH2D("XY positions", "", 100, -20 + distanceX, 20 + distanceX, 100, -20, 20);
+    TH1F *histogramEnergy = new TH1F("Energy all particles", "", 1000, 0, 0.3);
+    auto *histogramID = new TH1D("Type of particles by ID", "", 100, 0, 10.5);
+    auto *hPositionX = new TH1D("X positions", "", 100, rangeDownX, rangeUpX);
+    auto *hPositionY = new TH1D("Y positions", "", 100, rangeDownY, rangeUpY);
+    auto *hPositionXY = new TH2D("XY positions", "", 100, rangeDownX, rangeUpX, 100, rangeDownY,$
 	auto *hAngle = new TH1D("Particle angles", "", 360, -185, 185);
 
-	for (int i = 1; i <= 15; i++)
-	{
+       for (int i = 1; i <= 15; i++)
+        {
 
-		TH1F *hEnergyPart = new TH1F("Energy", "", 1000, 0, 1000);
+                TH1F *hEnergyPart = new TH1F("Energy", "", 1000, 0, 1000);
 
-		if (i < 4)
-			hEnergyPart->GetXaxis()->SetLimits(0., 0.3);
+                if (i < 4)
+                        hEnergyPart->GetXaxis()->SetLimits(0., 0.3);
 
-		string nameH = "Energy of particle ";
-		nameH = nameH + i;
-		hEnergyPart->SetName(nameH.c_str());
-		hEnergyPart->GetXaxis()->SetTitle("Energy in GeV ");
-		hEnergyPart->GetYaxis()->SetTitle("Amount");
-		HListEnergy.Add(hEnergyPart);
+                string nameH = "Energy of particle ";
+                nameH = nameH + i;
+                hEnergyPart->SetName(nameH.c_str());
+                hEnergyPart->GetXaxis()->SetTitle("Energy in GeV ");
+                hEnergyPart->GetYaxis()->SetTitle("Amount");
+                HListEnergy.Add(hEnergyPart);
 
-		TH1F *hPartX = new TH1F("Position X", "", 100, -20 + distanceX, 20 + distanceX);
-		string nameHX = "Position X of particle  ";
-		nameHX = nameHX + i;
-		hPartX->SetName(nameHX.c_str());
-		hPartX->GetXaxis()->SetTitle("Position on X axis");
-		hPartX->GetYaxis()->SetTitle("Amount");
-		HListPosX.Add(hPartX);
+                TH1F *hPartX = new TH1F("Position X", "", 100, rangeDownX, rangeUpX);
+                string nameHX = "Position X of particle  ";
+                nameHX = nameHX + i;
+                hPartX->SetName(nameHX.c_str());
+                hPartX->GetXaxis()->SetTitle("Position on X axis");
+                hPartX->GetYaxis()->SetTitle("Amount");
+                HListPosX.Add(hPartX);
 
-		TH1F *hPartY = new TH1F("Position Y", "", 100, -20 + distanceY, 20 + distanceY);
-		string nameHY = "Position Y of particle ";
-		nameHY = nameHY + i;
-		hPartY->SetName(nameHY.c_str());
-		hPartY->GetXaxis()->SetTitle("Position on Y axis");
-		hPartY->GetYaxis()->SetTitle("Amount");
-		HListPosY.Add(hPartY);
+                TH1F *hPartY = new TH1F("Position Y", "", 100, rangeDownY, rangeUpY);
+                string nameHY = "Position Y of particle ";
+                nameHY = nameHY + i;
+                hPartY->SetName(nameHY.c_str());
+                hPartY->GetXaxis()->SetTitle("Position on Y axis");
+                hPartY->GetYaxis()->SetTitle("Amount");
+                HListPosY.Add(hPartY);
 
-		TH2F *hPartXY = new TH2F("Position X & Y", "", 100, -20 + distanceX, 20 + distanceX,100, -20 + distanceY, 20 + distanceY);
-		string nameHXY = "Position X and Y of particle ";
-		nameHXY = nameHXY + i;
-		hPartXY->SetName(nameHXY.c_str());
-		hPartXY->GetXaxis()->SetTitle("Position on X axis");
-		hPartXY->GetYaxis()->SetTitle("Position on Y axis");
-		HListPosXY.Add(hPartXY);
-	}
+                TH2F *hPartXY = new TH2F("Position X & Y", "", 100, rangeDownX, rangeUpX, 100, range$
+                string nameHXY = "Position X and Y of particle ";
+                nameHXY = nameHXY + i;
+                hPartXY->SetName(nameHXY.c_str());
+                hPartXY->GetXaxis()->SetTitle("Position on X axis");
+                hPartXY->GetYaxis()->SetTitle("Position on Y axis");
+                HListPosXY.Add(hPartXY);
+        }
+
 
 	auto *hEnergyID = new TH2D("Dependence between energy and type of particle", "", 100, 0, 10, 30, 0, 0.3);
 	gROOT->Reset();
 
 	HList.Add(histogramID);
+	HList.Add(histogramEnergy);
 	HList.Add(hPositionXY);
 	HList.Add(hPositionX);
 	HList.Add(hPositionY);
@@ -177,7 +188,7 @@ int main(int argc, char **argv)
 		checkFile << "Read file: " << fname << endl;
 		int shift = 0;
 		int n = 0;
-		resultsParticles << fname << endl;
+		//resultsParticles << fname << endl;
 		shift = mapShifts[(int)stoi(fname.substr(fname.size() - 4))];
 
 		if (input.is_open())
@@ -253,7 +264,7 @@ int main(int argc, char **argv)
 						hY->Fill(partY);
 
 						TH2D *hXY = (TH2D *)HListPosXY[partID - 1];
-						hXY->Fill(partX,partY);
+						hXY->Fill(partX, partY);
 					}
 				}
 				delete part;
@@ -307,7 +318,7 @@ int main(int argc, char **argv)
 	HListPosY.Write();
 	for (int i = 0; i < 15; i++)
 	{
-		TH2D* hXY = (TH2D*)HListPosXY[i];
+		TH2D *hXY = (TH2D *)HListPosXY[i];
 		hXY->SetOption("colz");
 	}
 	HListPosXY.Write();
